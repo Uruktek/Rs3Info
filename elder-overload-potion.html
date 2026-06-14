@@ -18,7 +18,6 @@
     --accent-glow:rgba(126,231,135,.15);
     --mono:"SF Mono","JetBrains Mono","Fira Code",ui-monospace,Menlo,Consolas,monospace;
     --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    /* tier accents */
     --t1:#58a6ff; --t1-bg:rgba(88,166,255,.1);
     --t2:#39d3b4; --t2-bg:rgba(57,211,180,.1);
     --t3:#bc8cff; --t3-bg:rgba(188,140,255,.1);
@@ -41,7 +40,6 @@
   }
   .wrap{max-width:840px;margin:0 auto;padding:0 1.5rem;}
 
-  /* header */
   header{padding:4rem 1.5rem 2.5rem;}
   .header-inner{max-width:840px;margin:0 auto;}
   .tag{
@@ -71,7 +69,6 @@
   .lead{font-size:1.15rem;color:var(--text-dim);}
   a{color:var(--accent);}
 
-  /* stat grid */
   .stats{
     display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
     gap:.7rem;margin:1.8rem 0;
@@ -84,7 +81,6 @@
   .stat .k{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);}
   .stat .v{font-size:1.4rem;font-weight:700;margin-top:.25rem;letter-spacing:-.01em;}
 
-  /* table */
   .table-card{background:var(--bg-panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:1.4rem 0;}
   table{width:100%;border-collapse:collapse;font-size:.95rem;}
   th,td{text-align:left;padding:.85rem 1.1rem;}
@@ -95,7 +91,6 @@
   .tier-name{font-weight:600;}
   .badge{font-family:var(--mono);font-size:.8rem;color:var(--accent);}
 
-  /* flow */
   .flow{margin:1.6rem 0;}
   .tier{
     background:var(--bg-panel);border:1px solid var(--line);
@@ -119,12 +114,66 @@
   .ingredients{display:flex;flex-wrap:wrap;align-items:stretch;gap:.5rem;}
   .pill{
     flex:1 1 auto;min-width:0;border-radius:10px;padding:.65rem .85rem;
-    display:flex;flex-direction:column;justify-content:center;border:1px solid;
+    display:flex;align-items:center;gap:.6rem;border:1px solid;
   }
+  .pill .txt{display:flex;flex-direction:column;justify-content:center;min-width:0;}
   .pill .name{font-weight:600;font-size:.92rem;line-height:1.25;}
   .pill .desc{font-family:var(--mono);font-size:.68rem;opacity:.8;margin-top:.2rem;letter-spacing:.02em;}
   .op{display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--text-faint);font-weight:300;padding:0 .15rem;}
   .out{flex:0 0 auto;}
+
+  /* CSS-drawn potion vial glyph */
+  .vial{
+    flex:0 0 auto;width:16px;height:22px;position:relative;
+  }
+  .vial .stopper{
+    position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:7px;height:4px;border-radius:2px 2px 0 0;
+    background:var(--text-faint);
+  }
+  .vial .neck{
+    position:absolute;top:3px;left:50%;transform:translateX(-50%);
+    width:5px;height:4px;background:currentColor;opacity:.45;
+  }
+  .vial .bulb{
+    position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+    width:14px;height:15px;border-radius:50% 50% 48% 48%;
+    background:currentColor;
+    box-shadow:0 0 8px -1px currentColor;
+  }
+  .vial .shine{
+    position:absolute;bottom:5px;left:3px;width:3px;height:6px;
+    border-radius:50%;background:rgba(255,255,255,.55);
+  }
+  /* multi-vial cluster for the "6 potions" entries */
+  .vial-stack{flex:0 0 auto;display:flex;align-items:flex-end;}
+  .vial-stack .vial{width:13px;height:18px;margin-right:-5px;}
+  .vial-stack .vial:last-child{margin-right:0;}
+  .vial-stack .vial .bulb{width:11px;height:12px;}
+  .vial-stack .vial .neck{height:3px;top:2px;}
+  .vial-stack .vial .stopper{height:3px;width:6px;}
+  .vial-stack .vial .shine{display:none;}
+  /* leaf/herb glyph for clean torstol & fellstalk */
+  .leaf{
+    flex:0 0 auto;width:16px;height:20px;position:relative;color:inherit;
+  }
+  .leaf::before{
+    content:"";position:absolute;left:50%;top:1px;transform:translateX(-50%);
+    width:11px;height:17px;border-radius:0 50% 0 50%;
+    background:currentColor;box-shadow:0 0 7px -2px currentColor;
+  }
+  .leaf::after{
+    content:"";position:absolute;left:50%;top:3px;transform:translateX(-50%) rotate(0deg);
+    width:1.5px;height:14px;background:var(--bg-panel);opacity:.5;
+  }
+  /* spark glyph for primal extract */
+  .spark{flex:0 0 auto;width:16px;height:20px;position:relative;color:inherit;}
+  .spark::before,.spark::after{
+    content:"";position:absolute;left:50%;top:50%;background:currentColor;
+    box-shadow:0 0 7px -1px currentColor;
+  }
+  .spark::before{width:3px;height:18px;transform:translate(-50%,-50%);border-radius:2px;}
+  .spark::after{width:18px;height:3px;transform:translate(-50%,-50%);border-radius:2px;}
 
   .arrow-down{text-align:center;color:var(--text-faint);font-size:1.2rem;line-height:1;margin:.5rem 0;}
   .arrow-note{font-family:var(--mono);font-size:.66rem;color:var(--text-faint);text-align:center;margin:-.25rem 0 .55rem;letter-spacing:.04em;text-transform:uppercase;}
@@ -135,9 +184,11 @@
     border:1px solid var(--accent);border-radius:12px;
     background:linear-gradient(180deg,var(--accent-glow),transparent);
     text-align:center;padding:1.1rem;margin-top:.6rem;
+    display:flex;flex-direction:column;align-items:center;gap:.5rem;
   }
-  .result .name{font-weight:700;font-size:1.15rem;color:var(--accent);}
-  .result .desc{font-family:var(--mono);font-size:.74rem;color:var(--text-dim);margin-top:.3rem;letter-spacing:.02em;}
+  .result .rname{display:flex;align-items:center;gap:.55rem;font-weight:700;font-size:1.15rem;color:var(--accent);}
+  .result .desc{font-family:var(--mono);font-size:.74rem;color:var(--text-dim);letter-spacing:.02em;}
+  .result .vial .bulb{box-shadow:0 0 12px 0 currentColor;}
 
   .blue{background:var(--t1-bg);border-color:rgba(88,166,255,.35);color:#9ecbff;}
   .teal{background:var(--t2-bg);border-color:rgba(57,211,180,.35);color:#6fe3cd;}
@@ -145,6 +196,7 @@
   .green{background:var(--green-bg);border-color:rgba(126,231,135,.35);color:#a5f0ab;}
   .coral{background:var(--coral-bg);border-color:rgba(255,158,100,.35);color:#ffb98c;}
   .amber{background:var(--amber-bg);border-color:rgba(227,179,65,.35);color:#edcb73;}
+  .pill .txt .name{color:#e6edf3;}
 
   .callout{
     background:var(--bg-panel);border:1px solid var(--line);border-left:3px solid var(--accent);
@@ -212,11 +264,24 @@
         <span class="tier-meta">Level 96 · 1,000 xp</span>
       </div>
       <div class="ingredients">
-        <div class="pill blue"><span class="name">6 extreme potions (3)</span><span class="desc">att · str · def · ranged · magic · necro</span></div>
+        <div class="pill blue">
+          <span class="vial-stack" aria-hidden="true">
+            <span class="vial"><span class="stopper"></span><span class="neck"></span><span class="bulb"></span></span>
+            <span class="vial"><span class="stopper"></span><span class="neck"></span><span class="bulb"></span></span>
+            <span class="vial"><span class="stopper"></span><span class="neck"></span><span class="bulb"></span></span>
+          </span>
+          <span class="txt"><span class="name">6 extreme potions (3)</span><span class="desc">att · str · def · ranged · magic · necro</span></span>
+        </div>
         <div class="op">+</div>
-        <div class="pill green"><span class="name">Clean torstol</span></div>
+        <div class="pill green">
+          <span class="leaf" aria-hidden="true"></span>
+          <span class="txt"><span class="name">Clean torstol</span></span>
+        </div>
         <div class="op">=</div>
-        <div class="pill blue out"><span class="name">Overload</span></div>
+        <div class="pill blue out">
+          <span class="vial" aria-hidden="true"><span class="stopper"></span><span class="neck"></span><span class="bulb"></span><span class="shine"></span></span>
+          <span class="txt"><span class="name">Overload</span></span>
+        </div>
       </div>
     </div>
 
@@ -230,15 +295,31 @@
         <span class="tier-meta">Level 98 · 600 xp</span>
       </div>
       <div class="ingredients">
-        <div class="pill blue"><span class="name">Overload (4)</span></div>
+        <div class="pill blue">
+          <span class="vial" aria-hidden="true"><span class="stopper"></span><span class="neck"></span><span class="bulb"></span><span class="shine"></span></span>
+          <span class="txt"><span class="name">Overload (4)</span></span>
+        </div>
         <div class="op">+</div>
-        <div class="pill teal"><span class="name">6 super potions (4)</span><span class="desc">att · str · def · ranged · magic · necro</span></div>
+        <div class="pill teal">
+          <span class="vial-stack" aria-hidden="true">
+            <span class="vial"><span class="stopper"></span><span class="neck"></span><span class="bulb"></span></span>
+            <span class="vial"><span class="stopper"></span><span class="neck"></span><span class="bulb"></span></span>
+            <span class="vial"><span class="stopper"></span><span class="neck"></span><span class="bulb"></span></span>
+          </span>
+          <span class="txt"><span class="name">6 super potions (4)</span><span class="desc">att · str · def · ranged · magic · necro</span></span>
+        </div>
         <div class="op">+</div>
-        <div class="pill amber"><span class="name">Crystal flask</span></div>
+        <div class="pill amber">
+          <span class="vial" aria-hidden="true"><span class="stopper"></span><span class="neck"></span><span class="bulb"></span><span class="shine"></span></span>
+          <span class="txt"><span class="name">Crystal flask</span></span>
+        </div>
       </div>
       <div class="arrow-down">▾</div>
       <div class="ingredients">
-        <div class="pill teal" style="flex-basis:100%;align-items:center"><span class="name">Supreme overload potion (6)</span></div>
+        <div class="pill teal" style="flex-basis:100%;justify-content:center">
+          <span class="vial" aria-hidden="true"><span class="stopper"></span><span class="neck"></span><span class="bulb"></span><span class="shine"></span></span>
+          <span class="txt"><span class="name">Supreme overload potion (6)</span></span>
+        </div>
       </div>
     </div>
 
@@ -251,15 +332,27 @@
         <span class="tier-meta">Level 106 · 850 xp · no flask</span>
       </div>
       <div class="ingredients">
-        <div class="pill teal"><span class="name">Supreme overload (6)</span></div>
+        <div class="pill teal">
+          <span class="vial" aria-hidden="true"><span class="stopper"></span><span class="neck"></span><span class="bulb"></span><span class="shine"></span></span>
+          <span class="txt"><span class="name">Supreme overload (6)</span></span>
+        </div>
         <div class="op">+</div>
-        <div class="pill green"><span class="name">Clean fellstalk</span></div>
+        <div class="pill green">
+          <span class="leaf" aria-hidden="true"></span>
+          <span class="txt"><span class="name">Clean fellstalk</span></span>
+        </div>
         <div class="op">+</div>
-        <div class="pill coral"><span class="name">Primal extract</span></div>
+        <div class="pill coral">
+          <span class="spark" aria-hidden="true"></span>
+          <span class="txt"><span class="name">Primal extract</span></span>
+        </div>
       </div>
       <div class="arrow-down">▾</div>
       <div class="result">
-        <div class="name">Elder overload potion (6)</div>
+        <div class="rname">
+          <span class="vial purple" aria-hidden="true" style="color:#d2b3ff"><span class="stopper"></span><span class="neck"></span><span class="bulb"></span><span class="shine"></span></span>
+          Elder overload potion (6)
+        </div>
         <div class="desc">+17% +5 to all six combat stats · 6 min / dose · 36 min / flask</div>
       </div>
     </div>
@@ -273,7 +366,7 @@
   <h2>How the boost behaves</h2>
   <p>Like a normal overload, the elder overload reapplies its boosts every 15 seconds, so the stat gains barely decay across the six-minute window. Once it wears off the boosts are removed entirely, and you'll get a chatbox warning shortly before that happens. An elder overload (6) is also an ingredient in the elder overload salve, which layers on prayer restoration and protection from dragonfire, wyvern breath, and poison.</p>
 
-  <footer>Source: RuneScape Wiki (runescape.wiki) · crafting reference</footer>
+  <footer>Source: RuneScape Wiki (runescape.wiki) · crafting reference · icons are original CSS illustrations</footer>
 
 </div>
 </body>
