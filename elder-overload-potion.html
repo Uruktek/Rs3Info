@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elder Overload Potion — Crafting Guide</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-panel:#161b22;
+    --bg-panel-2:#1c232d;
+    --line:#2a323d;
+    --line-bright:#3a4452;
+    --text:#e6edf3;
+    --text-dim:#8b949e;
+    --text-faint:#6e7681;
+    --accent:#7ee787;
+    --accent-glow:rgba(126,231,135,.15);
+    --mono:"SF Mono","JetBrains Mono","Fira Code",ui-monospace,Menlo,Consolas,monospace;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    /* tier accents */
+    --t1:#58a6ff; --t1-bg:rgba(88,166,255,.1);
+    --t2:#39d3b4; --t2-bg:rgba(57,211,180,.1);
+    --t3:#bc8cff; --t3-bg:rgba(188,140,255,.1);
+    --green:#7ee787; --green-bg:rgba(126,231,135,.1);
+    --coral:#ff9e64; --coral-bg:rgba(255,158,100,.1);
+    --amber:#e3b341; --amber-bg:rgba(227,179,65,.1);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(900px 500px at 80% -10%, rgba(188,140,255,.08), transparent 60%),
+      radial-gradient(700px 400px at 0% 10%, rgba(88,166,255,.06), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    padding:0 0 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:840px;margin:0 auto;padding:0 1.5rem;}
+
+  /* header */
+  header{padding:4rem 1.5rem 2.5rem;}
+  .header-inner{max-width:840px;margin:0 auto;}
+  .tag{
+    display:inline-flex;align-items:center;gap:.5rem;
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;
+    color:var(--accent);background:var(--accent-glow);
+    border:1px solid rgba(126,231,135,.25);
+    padding:.3rem .7rem;border-radius:99px;margin-bottom:1.3rem;
+  }
+  .tag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+  h1{
+    font-size:clamp(2.2rem,6vw,3.4rem);
+    margin:0;line-height:1.05;font-weight:800;letter-spacing:-.02em;
+    background:linear-gradient(180deg,#fff,#9ba6b3);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .sub{color:var(--text-dim);font-size:1.1rem;margin:.9rem 0 0;max-width:60ch;}
+
+  h2{
+    font-size:.82rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.18em;
+    color:var(--text-faint);margin:3.2rem 0 1.2rem;
+    display:flex;align-items:center;gap:.8rem;
+  }
+  h2::after{content:"";flex:1;height:1px;background:var(--line);}
+
+  p{margin:0 0 1rem;color:var(--text);}
+  .lead{font-size:1.15rem;color:var(--text-dim);}
+  a{color:var(--accent);}
+
+  /* stat grid */
+  .stats{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    gap:.7rem;margin:1.8rem 0;
+  }
+  .stat{
+    background:var(--bg-panel);border:1px solid var(--line);
+    border-radius:12px;padding:1rem 1.1rem;position:relative;overflow:hidden;
+  }
+  .stat::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);opacity:.6;}
+  .stat .k{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);}
+  .stat .v{font-size:1.4rem;font-weight:700;margin-top:.25rem;letter-spacing:-.01em;}
+
+  /* table */
+  .table-card{background:var(--bg-panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:1.4rem 0;}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;}
+  th,td{text-align:left;padding:.85rem 1.1rem;}
+  thead th{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);background:var(--bg-panel-2);border-bottom:1px solid var(--line);}
+  tbody tr{border-bottom:1px solid var(--line);}
+  tbody tr:last-child{border-bottom:none;}
+  tbody tr:hover{background:var(--bg-panel-2);}
+  .tier-name{font-weight:600;}
+  .badge{font-family:var(--mono);font-size:.8rem;color:var(--accent);}
+
+  /* flow */
+  .flow{margin:1.6rem 0;}
+  .tier{
+    background:var(--bg-panel);border:1px solid var(--line);
+    border-radius:16px;padding:1.3rem 1.4rem 1.5rem;position:relative;
+  }
+  .tier-1{box-shadow:inset 0 0 0 1px rgba(88,166,255,.12);}
+  .tier-2{box-shadow:inset 0 0 0 1px rgba(57,211,180,.12);}
+  .tier-3{box-shadow:inset 0 0 0 1px rgba(188,140,255,.12);}
+  .tier-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1.1rem;flex-wrap:wrap;}
+  .tier-label{display:flex;align-items:center;gap:.7rem;}
+  .tier-num{
+    font-family:var(--mono);font-size:.78rem;font-weight:700;
+    width:26px;height:26px;display:grid;place-items:center;border-radius:8px;
+  }
+  .tier-1 .tier-num{background:var(--t1-bg);color:var(--t1);}
+  .tier-2 .tier-num{background:var(--t2-bg);color:var(--t2);}
+  .tier-3 .tier-num{background:var(--t3-bg);color:var(--t3);}
+  .tier-title{font-weight:700;font-size:1.1rem;}
+  .tier-meta{font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;color:var(--text-faint);text-transform:uppercase;}
+
+  .ingredients{display:flex;flex-wrap:wrap;align-items:stretch;gap:.5rem;}
+  .pill{
+    flex:1 1 auto;min-width:0;border-radius:10px;padding:.65rem .85rem;
+    display:flex;flex-direction:column;justify-content:center;border:1px solid;
+  }
+  .pill .name{font-weight:600;font-size:.92rem;line-height:1.25;}
+  .pill .desc{font-family:var(--mono);font-size:.68rem;opacity:.8;margin-top:.2rem;letter-spacing:.02em;}
+  .op{display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--text-faint);font-weight:300;padding:0 .15rem;}
+  .out{flex:0 0 auto;}
+
+  .arrow-down{text-align:center;color:var(--text-faint);font-size:1.2rem;line-height:1;margin:.5rem 0;}
+  .arrow-note{font-family:var(--mono);font-size:.66rem;color:var(--text-faint);text-align:center;margin:-.25rem 0 .55rem;letter-spacing:.04em;text-transform:uppercase;}
+  .connector{height:1.6rem;width:1px;background:linear-gradient(var(--line-bright),var(--line));margin:.15rem auto;position:relative;}
+  .connector::after{content:"▾";position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);color:var(--line-bright);font-size:.7rem;}
+
+  .result{
+    border:1px solid var(--accent);border-radius:12px;
+    background:linear-gradient(180deg,var(--accent-glow),transparent);
+    text-align:center;padding:1.1rem;margin-top:.6rem;
+  }
+  .result .name{font-weight:700;font-size:1.15rem;color:var(--accent);}
+  .result .desc{font-family:var(--mono);font-size:.74rem;color:var(--text-dim);margin-top:.3rem;letter-spacing:.02em;}
+
+  .blue{background:var(--t1-bg);border-color:rgba(88,166,255,.35);color:#9ecbff;}
+  .teal{background:var(--t2-bg);border-color:rgba(57,211,180,.35);color:#6fe3cd;}
+  .purple{background:var(--t3-bg);border-color:rgba(188,140,255,.35);color:#d2b3ff;}
+  .green{background:var(--green-bg);border-color:rgba(126,231,135,.35);color:#a5f0ab;}
+  .coral{background:var(--coral-bg);border-color:rgba(255,158,100,.35);color:#ffb98c;}
+  .amber{background:var(--amber-bg);border-color:rgba(227,179,65,.35);color:#edcb73;}
+
+  .callout{
+    background:var(--bg-panel);border:1px solid var(--line);border-left:3px solid var(--accent);
+    padding:1rem 1.2rem;margin:1.5rem 0;border-radius:0 12px 12px 0;color:var(--text-dim);font-size:.96rem;
+  }
+  .callout strong{color:var(--accent);font-weight:600;}
+
+  footer{
+    margin-top:3.5rem;padding-top:1.4rem;border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:.74rem;color:var(--text-faint);text-align:center;letter-spacing:.03em;
+  }
+  @media (max-width:560px){
+    .ingredients{flex-direction:column;}
+    .op{padding:.1rem 0;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <span class="tag">RuneScape · Herblore 106</span>
+    <h1>Elder Overload Potion</h1>
+    <p class="sub">The apex of the overload line — a full crafting walkthrough and recipe flowchart, built tier by tier.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <p class="lead">The elder overload combines the boosting properties of all six combat extreme potions, then upgrades twice. Each dose lifts Attack, Strength, Defence, Ranged, Magic, and Necromancy by 17% + 5 for six minutes.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="k">Herblore</div><div class="v">106</div></div>
+    <div class="stat"><div class="k">Experience</div><div class="v">850</div></div>
+    <div class="stat"><div class="k">Boost</div><div class="v">+17% +5</div></div>
+    <div class="stat"><div class="k">Per dose</div><div class="v">6 min</div></div>
+    <div class="stat"><div class="k">Per flask</div><div class="v">36 min</div></div>
+    <div class="stat"><div class="k">Recipe</div><div class="v">1.2M</div></div>
+  </div>
+
+  <p>The recipe is bought for 1,200,000 coins from the Meilyr Recipe Shop. Unlike the supreme tier, the final elder step does <em>not</em> require a crystal flask, and the process cannot be assisted by another player. With the Herblore master cape active, you can batch-make in sets of five using the ingredients for four.</p>
+
+  <h2>Tiers at a glance</h2>
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr><th>Tier</th><th>Herblore</th><th>Boost</th><th>Key added ingredients</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="tier-name">Overload</td><td class="badge">96</td><td>15% + 3</td><td>6 extreme potions + clean torstol</td></tr>
+        <tr><td class="tier-name">Supreme overload</td><td class="badge">98</td><td>16% + 4</td><td>Overload (4) + 6 super potions + crystal flask</td></tr>
+        <tr><td class="tier-name">Elder overload</td><td class="badge">106</td><td>17% + 5</td><td>Supreme overload (6) + clean fellstalk + primal extract</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Crafting workflow</h2>
+  <p>Because the elder overload sits atop a three-tier chain, building one from raw supplies means climbing through every tier below it. Follow the flow from top to bottom.</p>
+
+  <div class="flow">
+
+    <!-- TIER 1 -->
+    <div class="tier tier-1">
+      <div class="tier-head">
+        <span class="tier-label"><span class="tier-num">1</span><span class="tier-title">Base overload</span></span>
+        <span class="tier-meta">Level 96 · 1,000 xp</span>
+      </div>
+      <div class="ingredients">
+        <div class="pill blue"><span class="name">6 extreme potions (3)</span><span class="desc">att · str · def · ranged · magic · necro</span></div>
+        <div class="op">+</div>
+        <div class="pill green"><span class="name">Clean torstol</span></div>
+        <div class="op">=</div>
+        <div class="pill blue out"><span class="name">Overload</span></div>
+      </div>
+    </div>
+
+    <div class="connector"></div>
+    <div class="arrow-note">decant to 4-dose</div>
+
+    <!-- TIER 2 -->
+    <div class="tier tier-2">
+      <div class="tier-head">
+        <span class="tier-label"><span class="tier-num">2</span><span class="tier-title">Supreme overload</span></span>
+        <span class="tier-meta">Level 98 · 600 xp</span>
+      </div>
+      <div class="ingredients">
+        <div class="pill blue"><span class="name">Overload (4)</span></div>
+        <div class="op">+</div>
+        <div class="pill teal"><span class="name">6 super potions (4)</span><span class="desc">att · str · def · ranged · magic · necro</span></div>
+        <div class="op">+</div>
+        <div class="pill amber"><span class="name">Crystal flask</span></div>
+      </div>
+      <div class="arrow-down">▾</div>
+      <div class="ingredients">
+        <div class="pill teal" style="flex-basis:100%;align-items:center"><span class="name">Supreme overload potion (6)</span></div>
+      </div>
+    </div>
+
+    <div class="connector"></div>
+
+    <!-- TIER 3 -->
+    <div class="tier tier-3">
+      <div class="tier-head">
+        <span class="tier-label"><span class="tier-num">3</span><span class="tier-title">Elder overload</span></span>
+        <span class="tier-meta">Level 106 · 850 xp · no flask</span>
+      </div>
+      <div class="ingredients">
+        <div class="pill teal"><span class="name">Supreme overload (6)</span></div>
+        <div class="op">+</div>
+        <div class="pill green"><span class="name">Clean fellstalk</span></div>
+        <div class="op">+</div>
+        <div class="pill coral"><span class="name">Primal extract</span></div>
+      </div>
+      <div class="arrow-down">▾</div>
+      <div class="result">
+        <div class="name">Elder overload potion (6)</div>
+        <div class="desc">+17% +5 to all six combat stats · 6 min / dose · 36 min / flask</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout">
+    <strong>Tip.</strong> The unfinished-potion route via Granny Rowan's tier-3 Botanist's Workbench in Fort Forinthry lets you prepare stackable, noted versions of each tier to finish later — handy for bulk crafting and travel.
+  </div>
+
+  <h2>How the boost behaves</h2>
+  <p>Like a normal overload, the elder overload reapplies its boosts every 15 seconds, so the stat gains barely decay across the six-minute window. Once it wears off the boosts are removed entirely, and you'll get a chatbox warning shortly before that happens. An elder overload (6) is also an ingredient in the elder overload salve, which layers on prayer restoration and protection from dragonfire, wyvern breath, and poison.</p>
+
+  <footer>Source: RuneScape Wiki (runescape.wiki) · crafting reference</footer>
+
+</div>
+</body>
+</html>
