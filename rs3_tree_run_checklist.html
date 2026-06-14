@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RS3 Tree Run Checklist</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f5f4f0;
+    color: #1a1a1a;
+    padding: 2rem 1rem;
+    min-height: 100vh;
+  }
+  .container { max-width: 700px; margin: 0 auto; }
+  h1 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #1a1a1a;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 1.5rem;
+  }
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid #d0cec8;
+    background: transparent;
+    color: #666;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: #1a1a1a;
+    color: #fff;
+    border-color: #1a1a1a;
+  }
+  .reset-btn {
+    margin-left: auto;
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid #d0cec8;
+    background: transparent;
+    color: #888;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .reset-btn:hover { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+  .progress-wrap { margin-bottom: 1.25rem; }
+  .progress-label { font-size: 12px; color: #888; margin-bottom: 5px; }
+  .progress-bar-bg {
+    height: 4px;
+    border-radius: 2px;
+    background: #e2e0da;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    border-radius: 2px;
+    background: #1D9E75;
+    transition: width .3s ease;
+  }
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin: 1.25rem 0 .5rem;
+  }
+  .patch {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #e2e0da;
+    background: #ffffff;
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: background .12s, opacity .15s;
+    user-select: none;
+  }
+  .patch:hover { background: #faf9f7; }
+  .patch.done { opacity: .45; }
+  .patch.done .patch-name { text-decoration: line-through; }
+  .cb {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 1.5px solid #ccc;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .12s, border-color .12s;
+  }
+  .cb.checked { background: #1D9E75; border-color: #1D9E75; }
+  .cb.checked::after {
+    content: '';
+    width: 9px;
+    height: 5px;
+    border-left: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: rotate(-45deg) translate(1px, -1px);
+    display: block;
+  }
+  .patch-info { flex: 1; min-width: 0; }
+  .patch-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 3px;
+  }
+  .patch-loc {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 5px;
+  }
+  .badges { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 5px; }
+  .badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+  .badge-tree { background: #E1F5EE; color: #0F6E56; }
+  .badge-fruit { background: #FAECE7; color: #993C1D; }
+  .teleports { font-size: 12px; color: #666; display: flex; flex-direction: column; gap: 4px; }
+  .teleport-item { display: flex; align-items: baseline; gap: 4px; line-height: 1.5; }
+  .teleport-item::before { content: '📍'; font-size: 11px; flex-shrink: 0; }
+  .teleport-item strong { color: #1a1a1a; font-weight: 600; }
+  .tel-detail { color: #888; font-size: 11px; }
+
+  @media (prefers-color-scheme: dark) {
+    body { background: #1a1917; color: #e8e6e1; }
+    h1 { color: #e8e6e1; }
+    .patch { background: #242220; border-color: #3a3834; }
+    .patch:hover { background: #2c2a27; }
+    .patch-name { color: #e8e6e1; }
+    .progress-bar-bg { background: #3a3834; }
+    .filter-btn.active, .filter-btn:hover { background: #e8e6e1; color: #1a1917; border-color: #e8e6e1; }
+    .filter-btn { border-color: #3a3834; color: #aaa; }
+    .reset-btn { border-color: #3a3834; color: #777; }
+    .reset-btn:hover { background: #3b1a1a; color: #fca5a5; border-color: #7f1d1d; }
+    .cb { border-color: #555; }
+    .section-label { color: #666; }
+    .badge-tree { background: #0a2e22; color: #5DCAA5; }
+    .badge-fruit { background: #2e160e; color: #F0997B; }
+    .teleports { color: #888; }
+    .teleport-item strong { color: #e8e6e1; }
+    .tel-detail { color: #666; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🌳 RS3 Tree Run Checklist</h1>
+  <p class="subtitle">Click any patch to mark it done. Checks are saved in your browser.</p>
+
+  <div class="controls">
+    <button class="filter-btn active" onclick="setFilter('all', this)">All (15)</button>
+    <button class="filter-btn" onclick="setFilter('tree', this)">Trees (8)</button>
+    <button class="filter-btn" onclick="setFilter('fruit', this)">Fruit Trees (8)</button>
+    <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label" id="prog-label">0 / 15 checked</div>
+    <div class="progress-bar-bg"><div class="progress-bar" id="prog-bar" style="width:0%"></div></div>
+  </div>
+
+  <div id="list"></div>
+</div>
+
+<script>
+const patches = [
+  {
+    id: "lumbridge",
+    name: "Lumbridge",
+    loc: "NW of Lumbridge Castle",
+    types: ["tree"],
+    teleports: [
+      { label: "Lumbridge Teleport", detail: "Normal spellbook — 3 Law, 1 Air, 1 Earth rune (lv 31)" },
+      { label: "Lumbridge Lodestone", detail: "Free — activate via the lodestone network" }
+    ]
+  },
+  {
+    id: "varrock",
+    name: "Varrock Palace",
+    loc: "Palace courtyard",
+    types: ["tree"],
+    teleports: [
+      { label: "Varrock Teleport", detail: "Normal spellbook — 3 Law, 1 Air, 1 Fire rune (lv 25)" },
+      { label: "Varrock Lodestone", detail: "Free — activate via the lodestone network" }
+    ]
+  },
+  {
+    id: "falador",
+    name: "Falador Park",
+    loc: "Inside Falador Park",
+    types: ["tree"],
+    teleports: [
+      { label: "Falador Teleport", detail: "Normal spellbook — 3 Law, 1 Air, 1 Water rune (lv 37)" },
+      { label: "Falador Lodestone", detail: "Free — activate via the lodestone network" }
+    ]
+  },
+  {
+    id: "taverley",
+    name: "Taverley",
+    loc: "Near Head Farmer Jones",
+    types: ["tree"],
+    teleports: [
+      { label: "House Teleport (POH in Taverley)", detail: "Normal spellbook — 1 Law, 1 Air, 1 Earth rune (lv 40)" },
+      { label: "Taverley Lodestone", detail: "Free — activate via the lodestone network, then run north" }
+    ]
+  },
+  {
+    id: "gnome_stronghold",
+    name: "Tree Gnome Stronghold",
+    loc: "Near the Agility Course",
+    types: ["tree", "fruit"],
+    teleports: [
+      { label: "Spirit Tree — option 2", detail: "Teleports directly to Tree Gnome Stronghold" },
+      { label: "Gnome Glider — option 7", detail: "Fly to the Gnome Stronghold; use option 7 in the glider menu" }
+    ]
+  },
+  {
+    id: "prifddinas_tree",
+    name: "Prifddinas — Trahaearn District",
+    loc: "Outer circle, Trahaearn district",
+    types: ["tree"],
+    teleports: [
+      { label: "Prifddinas Lodestone", detail: "Free — activate via the lodestone network (requires Plague's End)" },
+      { label: "Crystal Teleport Seed — options 8, 9 or 0", detail: "Teleports to Trahaearn district (requires Within The Light)" }
+    ]
+  },
+  {
+    id: "fort_forinthry",
+    name: "Fort Forinthry — Woodcutters' Grove",
+    loc: "Tier 2 Woodcutters' Grove",
+    types: ["tree"],
+    teleports: [
+      { label: "Fort Forinthry Lodestone", detail: "Free — activate via the lodestone network" },
+      { label: "Fairy Ring — code BJP", detail: "Enter B-J-P on any fairy ring to teleport to Fort Forinthry" }
+    ]
+  },
+  {
+    id: "dalia",
+    name: "Dalia's Tree Nursery",
+    loc: "West of Shrine of Inanna",
+    types: ["tree", "fruit"],
+    teleports: [
+      { label: "Wendlewick Lodestone", detail: "Free — activate via lodestone network, then run south" },
+      { label: "Fairy Ring — code BKS", detail: "Enter B-K-S on any fairy ring, then run west" }
+    ]
+  },
+  {
+    id: "gnome_village",
+    name: "Tree Gnome Village",
+    loc: "West of the maze",
+    types: ["fruit"],
+    teleports: [
+      { label: "Spirit Tree — option 1", detail: "Teleports to Tree Gnome Village; Elkoy guides you out near the patch" },
+      { label: "Fairy Ring — code CIQ", detail: "Enter C-I-Q on any fairy ring" }
+    ]
+  },
+  {
+    id: "brimhaven",
+    name: "Brimhaven",
+    loc: "North of Brimhaven",
+    types: ["fruit"],
+    teleports: [
+      { label: "House Teleport (POH in Brimhaven)", detail: "Normal spellbook — 1 Law, 1 Air, 1 Earth rune (lv 40)" },
+      { label: "Karamja Lodestone", detail: "Free — activate via the lodestone network, then run north through Brimhaven" }
+    ]
+  },
+  {
+    id: "catherby",
+    name: "Catherby",
+    loc: "East of Catherby",
+    types: ["fruit"],
+    teleports: [
+      { label: "Catherby Teleport", detail: "Lunar spellbook (lv 87) — 3 Astral, 10 Earth, 5 Water runes" },
+      { label: "Catherby Lodestone", detail: "Free — activate via the lodestone network" }
+    ]
+  },
+  {
+    id: "lletya",
+    name: "Lletya",
+    loc: "Inside Lletya",
+    types: ["fruit"],
+    teleports: [
+      { label: "Crystal Teleport Seed — option 1", detail: "Teleports directly to Lletya (requires Within The Light)" },
+      { label: "Tirannwn Lodestone", detail: "Free — activate via the lodestone network (requires Regicide)" }
+    ]
+  },
+  {
+    id: "herblore_habitat",
+    name: "Herblore Habitat",
+    loc: "South Karamja jungle",
+    types: ["fruit"],
+    teleports: [
+      { label: "Juju Teleport Spiritbag", detail: "Consumable item — teleports directly to Herblore Habitat" },
+      { label: "Fairy Ring — code CJS", detail: "Enter C-J-S on any fairy ring" }
+    ]
+  },
+  {
+    id: "prifddinas_fruit",
+    name: "Prifddinas — Meilyr District",
+    loc: "North-east of Prifddinas",
+    types: ["fruit"],
+    teleports: [
+      { label: "Crystal Teleport Seed — options 8 or 9", detail: "Teleports to Meilyr district (requires Within The Light)" },
+      { label: "Prifddinas Lodestone", detail: "Free — activate via the lodestone network, then run north-east to Meilyr" }
+    ]
+  }
+];
+
+const STORAGE_KEY = 'rs3_tree_run_v1';
+let checked = {};
+let filter = 'all';
+
+function load() {
+  try { checked = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { checked = {}; }
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(checked)); } catch(e) {}
+}
+function toggle(id) {
+  checked[id] = !checked[id];
+  save();
+  render();
+}
+function resetAll() {
+  checked = {};
+  save();
+  render();
+}
+function setFilter(f, btn) {
+  filter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function render() {
+  const totalPatches = patches.length;
+  const doneCount = patches.filter(p => checked[p.id]).length;
+  document.getElementById('prog-label').textContent = doneCount + ' / ' + totalPatches + ' checked';
+  document.getElementById('prog-bar').style.width = Math.round(doneCount / totalPatches * 100) + '%';
+
+  const visible = filter === 'all' ? patches : patches.filter(p => p.types.includes(filter));
+
+  const treeOnly = visible.filter(p => p.types.includes('tree') && !p.types.includes('fruit'));
+  const fruitOnly = visible.filter(p => p.types.includes('fruit') && !p.types.includes('tree'));
+  const both = visible.filter(p => p.types.includes('tree') && p.types.includes('fruit'));
+
+  let html = '';
+
+  function renderGroup(label, group) {
+    if (!group.length) return '';
+    let s = '<div class="section-label">' + label + ' (' + group.length + ')</div>';
+    group.forEach(p => {
+      const isDone = !!checked[p.id];
+      const badges = p.types.map(t =>
+        '<span class="badge badge-' + t + '">' + (t === 'tree' ? 'Tree' : 'Fruit tree') + '</span>'
+      ).join('');
+      const tels = p.teleports.map(t => '<span class="teleport-item"><strong>' + t.label + '</strong><span class="tel-detail"> — ' + t.detail + '</span></span>').join('');
+      s += '<div class="patch' + (isDone ? ' done' : '') + '" onclick="toggle(\'' + p.id + '\')" tabindex="0" role="checkbox" aria-checked="' + (isDone ? 'true' : 'false') + '" onkeydown="if(event.key===\'Enter\'||event.key===\' \')toggle(\'' + p.id + '\')">' +
+        '<div class="cb' + (isDone ? ' checked' : '') + '"></div>' +
+        '<div class="patch-info">' +
+        '<div class="patch-name">' + p.name + '</div>' +
+        '<div class="patch-loc">' + p.loc + '</div>' +
+        '<div class="badges">' + badges + '</div>' +
+        '<div class="teleports">' + tels + '</div>' +
+        '</div></div>';
+    });
+    return s;
+  }
+
+  if (filter === 'all') {
+    html += renderGroup('Tree patches', treeOnly);
+    html += renderGroup('Both (tree + fruit tree)', both);
+    html += renderGroup('Fruit tree patches', fruitOnly);
+  } else if (filter === 'tree') {
+    html += renderGroup('Tree patches', treeOnly);
+    if (both.length) html += renderGroup('Also has fruit tree', both);
+  } else {
+    if (both.length) html += renderGroup('Also has tree patch', both);
+    html += renderGroup('Fruit tree patches', fruitOnly);
+  }
+
+  document.getElementById('list').innerHTML = html;
+}
+
+load();
+render();
+</script>
+</body>
+</html>
